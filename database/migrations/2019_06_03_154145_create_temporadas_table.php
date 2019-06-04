@@ -13,9 +13,15 @@ class CreateTemporadasTable extends Migration
      */
     public function up()
     {
+        //TABELA -> temporadas
         Schema::create('temporadas', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->integer('numero');
+            $table->integer('serie_id');
+            $table->timestamps();  //mantém histórico de quando foi inserido/alterado
+
+            //serie_id tem referência com serie_id da tabela series
+            $table->foreign('serie_id')->references('id')->on('series');
         });
     }
 

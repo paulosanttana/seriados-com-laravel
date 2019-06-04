@@ -13,9 +13,15 @@ class CreateEpisodiosTable extends Migration
      */
     public function up()
     {
+        //TABELA -> episodios
         Schema::create('episodios', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->integer('numero');
+            $table->integer('temporada_id');
+            $table->timestamps();  //mantém histórico de quando foi inserido/alterado
+
+            //temporada_id tem referência com temporada_id da tabela temporadas
+            $table->foreign('temporada_id')->references('id')->on('temporadas');
         });
     }
 
