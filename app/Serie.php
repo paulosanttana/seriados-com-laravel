@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use App\Temporada;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +14,6 @@ class Serie extends Model
     //mapeamento do relacionamento (Serie tem varias'hasMany' Temporadas)
     public function  temporadas()
     {
-        return $this->hasMany(Temporadas::class);
+        return $this->hasMany(Temporada::class);
     }
 }

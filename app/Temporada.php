@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Serie;
 
 class Temporada extends Model
 {
+    protected $fillable = ['numero'];
+    public $timestamps = false;
+    
     //mapeamento do relacionamento (Temporada tem varias'hasMany' Episodios)
     public function episodios()
     {
