@@ -35,5 +35,6 @@
     </div> 
 
     <button class="btn btn-primary mt-2">Adicionar</button>  
+    {{-- <button class="btn btn-danger mt-2">Voltar</button>   --}}
 </form>
 @endsection

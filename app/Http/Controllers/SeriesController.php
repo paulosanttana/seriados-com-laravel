@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Serie;
 use App\Temporada;
+use App\Episodio;
+use App\Services\{CriadorDeSerie, RemovedorDeSerie};
 use App\Http\Requests\SeriesFormRequest;
 
 class SeriesController extends Controller
@@ -29,18 +31,15 @@ class SeriesController extends Controller
     }
 
     //INSERT registro do banco sqlite
-    public function store(SeriesFormRequest $request)
+    public function store(SeriesFormRequest $request, CriadorDeSerie $criadorDeSerie)
     {
-        $serie = Serie::create(['nome' => $request->nome]);
-        $qtdTemporadas = $request->qtd_temporadas;
-        for ($i=1; $i <= $qtdTemporadas; $i++) { 
-           $temporada = $serie->temporadas()->create(['numero' => $i]);
-
-           for ($j=1; $j <= $request->ep_por_temporada; $j++) { 
-               $temporada->episodios()->create(['numero' => $j]);
-           }
-        }
-
+        // cria uma serie apartir do metodo criadorDeSerie da classe CriadorDeSerie.
+        $serie = $criadorDeSerie->criarSerie(
+            // passando parametros
+            $request->nome,
+            $request->qtd_temporadas,
+            $request->ep_por_temporada
+        );
 
         $request->session()
             ->flash(
@@ -52,13 +51,13 @@ class SeriesController extends Controller
     }
 
     //DELETE registro do banco sqlite
-    public function destroy(Request $request)
+    public function destroy(Request $request, RemovedorDeSerie $removedorDeSerie)
     {
-        Serie::destroy($request->id);
+        $nomeSerie = $removedorDeSerie->removerSerie($request->id);
         $request->session()
             ->flash(
                 'mensagem',
-                "Série removida com sucesso"
+                "Série $nomeSerie removida com sucesso"
             );
 
         return redirect()->route('listar_series');
